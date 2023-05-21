@@ -87,6 +87,10 @@ input[type=range]::-webkit-slider-runnable-track {
     font-size: 20px;
 }
 
+.track-control i {
+    cursor: pointer;
+}
+
 .stroke__list {
     display: none;
 }

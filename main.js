@@ -1,41 +1,53 @@
 const musicList = [
     {
-        'img': '.img/nauchoeman.jpg',
+        'img': './img/nauchoeman.jpg',
         'name': 'Nấu Cho Em Ăn',
         'artist': 'Đen Vâu',
-        'music': './music/NauChoEmAn.mp3'
+        'music': '/music/NauChoEmAn.mp3'
     },
     {
-        'img': '.img/mang-tien-ve-cho-me.jpg',
+        'img': '/img/mang-tien-ve-cho-me.jpg',
         'name': 'Mang Tiền Về Cho Mẹ',
         'artist': 'Đen Vâu',
-        'music': '.music/mang-tien-ve-cho-me.mp3'
+        'music': '/music/mangtienvechome.mp3'
     },
     {
-        'img': '.img/loi-nho.jpg',
+        'img': './img/loi-nho.jpg',
         'name': 'Lối Nhỏ',
         'artist': 'Đen Vâu',
-        'music': '.music/loi-nho.mp3'
+        'music': '/music/loi-nho.mp3'
     },
     {
-        'img': '.img/tron-tim.jpg',
+        'img': './img/tron-tim.jpg',
         'name': 'Trốn Tìm',
         'artist': 'Đen Vâu',
-        'music': '.music/tron-tim.mp3'
+        'music': '/music/tron-tim.mp3'
     }
 ];
 
 const currentTrack = document.createElement('audio');
+const trackImg = document.querySelector('.track-img');
+const wave = document.querySelectorAll('.stroke');
+const playList = document.querySelector('.play-list');
+const nowPlaying = document.querySelector('.now-playing');
+const waveList = document.querySelector('.stroke__list');
+const playBtn = document.querySelector('.play__btn');
+const btnPause = document.querySelector('.play__btn i:first-child');
+const btnPlay = document.querySelector('.play__btn i:last-child');
+const trackName = document.querySelector('.track-info h3');
+const trackArtist = document.querySelector('.track-info p');
+const backBtn = document.querySelector('.backBtn');
+const nextBtn = document.querySelector('.nextBtn');
 
+let isPlaying = false;
+let index = 0;
 
 // Hiển thị đọ dài danh sách phát
-const playList = document.querySelector('.play-list');
 playList.innerHTML = musicList.length;
 
-
 function playBack(index) {
+    isPlaying = true;
     // Hiển thị số thứ tự danh sách đang phát
-    const nowPlaying = document.querySelector('.now-playing');
     nowPlaying.innerHTML = index + 1;
 
     // Phát nhạc 
@@ -43,31 +55,64 @@ function playBack(index) {
     currentTrack.load();
     currentTrack.play();
 
+    // Import ảnh, tên nhạc, tên tác giả
+    trackImg.style.backgroundImage = `url('${musicList[index].img}');`;
+    trackName.innerHTML = musicList[index].name;
+    trackArtist.innerHTML = musicList[index].artist;
+
     // Xoay ảnh
-    const trackImg = document.querySelector('.track-img');
     trackImg.classList.add('active');
 
     // Hiển thị wave
-    const wave = document.querySelectorAll('.stroke');
-    const waveList = document.querySelector('.stroke__list');
     waveList.style.height = '70px';
     waveList.style.display = 'flex';
-    wave.forEach(function(item) {
+    wave.forEach(function (item) {
         item.classList.add('active');
     });
 }
 
-// Lắng nghe sự kiện click vào nhút Play
-const playBtn = document.querySelector('.play__btn');
-const btnPause = document.querySelector('.play__btn i:first-child');
-const btnPlay = document.querySelector('.play__btn i:last-child');
-playBtn.addEventListener('click', function() {
-    // Thay đổi nút play
-    btnPause.style.display = 'none';
-    btnPlay.style.display = 'block';
+function pauseTrack() {
+    // Dừng nhạc
+    currentTrack.pause();
+    isPlaying = false;
 
-    //Phát nhạc
-    playBack(0);
+    // Dừng xoay ảnh
+    trackImg.classList.remove('active');
+
+    // Ẩn wave
+    waveList.style.display = 'none';
+}
+
+// Lắng nghe sự kiện click vào nhút Play
+playBtn.addEventListener('click', function () {
+    if (isPlaying === false) {
+        isPlaying = true;
+
+        // Thay đổi nút play
+        btnPause.style.display = 'none';
+        btnPlay.style.display = 'block';
+
+        //Phát nhạc
+        playBack(index);
+    } else {
+        // Thay đổi nút play
+        btnPause.style.display = 'block';
+        btnPlay.style.display = 'none';
+
+        // Dừng nhạc
+        pauseTrack();
+    }
 })
 
-console.log(currentTrack.play());
+// Lắng nghe sự kiện back
+backBtn.addEventListener('click', function() {
+    index = index > 0 ?  index - 1 : musicList.length - 1;
+    playBack(index);
+})
+
+// Lắng nghe sự kiện next
+nextBtn.addEventListener('click', function() {
+    index = index + 1 === musicList.length ? 0 : index + 1;
+    console.log(index, musicList.length)
+    playBack(index);
+})
