@@ -1,0 +1,120 @@
+body {
+    background-image: linear-gradient(to right, rgb(76, 150, 152), rgb(69, 75, 142));
+}
+
+.music {
+    height: 100vh;
+}
+
+.player {
+    padding: 30px 40px;
+    box-shadow: 0 15px 20px rgba(0, 0, 0, 0.5);
+    color: #fff;
+}
+
+.play__btn i {
+    font-size: 40px;
+}
+
+.play__btn i:first-child {
+    display: none;
+}
+
+.track-art img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+    animation: rotate 8s linear infinite;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0);
+    }
+
+    50% {
+        transform: rotate(180deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.track-info h3 {
+    margin-bottom: 0;
+    font-weight: 400;
+}
+
+.track-info p {
+    margin-bottom: 0;
+}
+
+input[type=range] {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: linear-gradient(to right, rgb(76, 150, 152), rgb(69, 75, 142));
+    width: 250px;
+    height: 5px;
+    margin: 0 8px;
+    box-shadow: rgb(0 0 0 / 30%) 0px 0px 5px;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    border: 1px solid blue;
+    border-radius: 50%;
+    background-color: #fff;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.track-control {
+    font-size: 25px;
+}
+
+.stroke__list {
+    height: 70px;
+}
+
+.stroke {
+    width: 5px;
+    height: 70px;
+    background-color: #fff;
+    margin: 0 4px;
+    border-radius: 4px;
+    animation: waveInfinity 1.4s linear infinite;
+}
+
+.stroke:nth-child(1), .stroke:nth-child(7) {
+    animation-delay: 0s;
+}
+
+.stroke:nth-child(2), .stroke:nth-child(6) {
+    animation-delay: 0.3s;
+}
+
+.stroke:nth-child(3), .stroke:nth-child(5) {
+    animation-delay: 0.6s;
+}
+
+.stroke:nth-child(4){
+    animation-delay: 0.9s;
+}
+
+@keyframes waveInfinity {
+    50% {
+        background-color: #4286f4;
+        height: 20px;
+    }
+    100% {
+        height: 70px;
+    }
+}
