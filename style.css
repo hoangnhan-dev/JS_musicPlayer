@@ -16,15 +16,22 @@ body {
     font-size: 40px;
 }
 
-.play__btn i:first-child {
+.play__btn i:last-child {
     display: none;
 }
 
-.track-art img {
+.track-img {
     width: 150px;
     height: 150px;
     border-radius: 50%;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+    background-image: url('./img/nauchoeman.jpg');
+    background-size: 200%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.track-img.active {
     animation: rotate 8s linear infinite;
 }
 
@@ -77,14 +84,14 @@ input[type=range]::-webkit-slider-runnable-track {
 }
 
 .track-control {
-    font-size: 25px;
+    font-size: 20px;
 }
 
 .stroke__list {
-    height: 70px;
+    display: none;
 }
 
-.stroke {
+.stroke.active {
     width: 5px;
     height: 70px;
     background-color: #fff;
