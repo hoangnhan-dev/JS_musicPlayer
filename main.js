@@ -38,9 +38,12 @@ const trackName = document.querySelector('.track-info h3');
 const trackArtist = document.querySelector('.track-info p');
 const backBtn = document.querySelector('.backBtn');
 const nextBtn = document.querySelector('.nextBtn');
+const currentTime = document.querySelector('.current-time');
+const trackDuration = document.querySelector('.track-duration');
 
 let isPlaying = false;
 let index = 0;
+let time;
 
 // Hiển thị đọ dài danh sách phát
 playList.innerHTML = musicList.length;
@@ -54,6 +57,21 @@ function playBack(index) {
     currentTrack.src = musicList[index].music;
     currentTrack.load();
     currentTrack.play();
+
+    // Hiển thị thanh trượt.
+    time = setInterval(function () {
+        let currentMinutes = Math.floor(currentTrack.currentTime / 60);
+        let currentSeconds = Math.floor(currentTrack.currentTime % 60);
+        currentSeconds < 10 ? currentTime.innerText = `0${currentMinutes}:0${currentSeconds}` :
+            currentTime.innerText = `0${currentMinutes}:${currentSeconds}`;
+    }, 1000);
+
+    let trackMinutes = Math.floor(currentTrack.duration / 60);
+    let trackSeconds = Math.floor(currentTrack.duration % 60);
+    console.log(trackSeconds);
+    console.log(trackMinutes, trackSeconds);
+    trackSeconds < 10 ? trackDuration.innerText = `0${trackMinutes}:0${trackSeconds}` :
+        trackDuration.innerText = `0${trackMinutes}:${trackSeconds}`;
 
     // Import ảnh, tên nhạc, tên tác giả
     trackImg.style.backgroundImage = `url('${musicList[index].img}');`;
@@ -81,6 +99,10 @@ function pauseTrack() {
 
     // Ẩn wave
     waveList.style.display = 'none';
+
+    // Dừng current time
+    clearInterval(time);
+    currentTime.innerText = `00:00`;
 }
 
 // Lắng nghe sự kiện click vào nhút Play
@@ -105,13 +127,13 @@ playBtn.addEventListener('click', function () {
 })
 
 // Lắng nghe sự kiện back
-backBtn.addEventListener('click', function() {
-    index = index > 0 ?  index - 1 : musicList.length - 1;
+backBtn.addEventListener('click', function () {
+    index = index > 0 ? index - 1 : musicList.length - 1;
     playBack(index);
 })
 
 // Lắng nghe sự kiện next
-nextBtn.addEventListener('click', function() {
+nextBtn.addEventListener('click', function () {
     index = index + 1 === musicList.length ? 0 : index + 1;
     console.log(index, musicList.length)
     playBack(index);
