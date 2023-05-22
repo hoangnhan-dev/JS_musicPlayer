@@ -105,9 +105,9 @@ function trackRepeatAll() {
 
 function nextTrack() {
     if (isRandom) {
-        let randTrack = Math.floor(Math.random() * 4);
+        let randTrack = Math.floor(Math.random() * currentTrack.length - 1);
         while (randTrack === index) {
-            randTrack = Math.floor(Math.random() * 4);
+            randTrack = Math.floor(Math.random() * currentTrack.length - 1);
         }
         index = randTrack;
     }
@@ -119,9 +119,9 @@ function nextTrack() {
 
 function backTrack() {
     if (isRandom) {
-        let randTrack = Math.floor(Math.random() * 4);
+        let randTrack = Math.floor(Math.random() * currentTrack.length);
         while (randTrack === index) {
-            randTrack = Math.floor(Math.random() * 4);
+            randTrack = Math.floor(Math.random() * currentTrack.length);
         }
         index = randTrack;
     }
