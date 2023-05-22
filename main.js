@@ -136,33 +136,14 @@ function backTrack() {
     playBack(index);
 }
 
-function playBack(index) {
-    // Hiển thị số thứ tự danh sách đang phát
-    nowPlaying.innerHTML = index + 1;
-
-    // Phát nhạc 
-    if (trackPos < 1) {
-        currentTrack.src = musicList[index].music;
-        currentTrack.load();
-        currentTrack.play();
-    }
-    else {
-        currentTrack.play();
-    }
-
-    // Xử lí thanh volumn
+function volumnControl() {
     trackVolumn.value = 100;
     trackVolumn.addEventListener('change', () => {
         currentTrack.volume = trackVolumn.value / 100;
     })
+}
 
-    // Xử lí tua bài phát bằng thanh slider track
-    trackSlider.addEventListener('change', () => {
-        currentTrack.currentTime = trackSlider.value / 100 * currentTrack.duration;
-
-    })
-
-    // Xử lí thanh trượt.
+function inputSlider() {
     time = setInterval(() => {
         // Hiển thị thời gian hiện tại
         let currentMinutes = Math.floor(currentTrack.currentTime / 60);
@@ -180,6 +161,50 @@ function playBack(index) {
         // Hiển thị thanh thời lượng bài hát
         trackSlider.value = currentTrack.currentTime / currentTrack.duration * 100;
     }, 1000);
+}
+
+function pauseTrack() {
+    // Dừng nhạc
+    currentTrack.pause();
+    isPlaying = false;
+
+    // Dừng xoay ảnh
+    trackImg.classList.remove('active');
+
+    // Remove active 
+    wave.forEach(function (item) {
+        item.classList.remove('active');
+    });
+
+    // Dừng current time
+    clearInterval(time);
+}
+
+function playBack(index) {
+    // Hiển thị số thứ tự danh sách đang phát
+    nowPlaying.innerHTML = index + 1;
+
+    // Phát nhạc 
+    if (trackPos < 1) {
+        currentTrack.src = musicList[index].music;
+        currentTrack.load();
+        currentTrack.play();
+    }
+    else {
+        currentTrack.play();
+    }
+
+    // Xử lí thanh volumn
+    volumnControl();
+
+    // Xử lí tua bài phát bằng thanh slider track
+    trackSlider.addEventListener('change', () => {
+        currentTrack.currentTime = trackSlider.value / 100 * currentTrack.duration;
+
+    })
+
+    // Xử lí thanh trượt.
+    inputSlider();
 
     // Import ảnh, tên nhạc, tên tác giả
     trackImg.style.backgroundImage = `url('${musicList[index].img}')`;
@@ -200,23 +225,6 @@ function playBack(index) {
     currentTrack.addEventListener('ended', () => {
         nextTrack();
     })
-}
-
-function pauseTrack() {
-    // Dừng nhạc
-    currentTrack.pause();
-    isPlaying = false;
-
-    // Dừng xoay ảnh
-    trackImg.classList.remove('active');
-
-    // Remove active 
-    wave.forEach(function (item) {
-        item.classList.remove('active');
-    });
-
-    // Dừng current time
-    clearInterval(time);
 }
 
 // Lắng nghe sự kiện click vào nhút Play
