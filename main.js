@@ -41,16 +41,79 @@ const nextBtn = document.querySelector('.nextBtn');
 const currentTime = document.querySelector('.current-time');
 const trackDuration = document.querySelector('.track-duration');
 const trackSlider = document.querySelector('.track-slider input');
+const trackVolumn = document.querySelector('.track-volumn input');
+const trackShuffle = document.querySelector('.track-shuffle');
+const trackRepeat = document.querySelector('.track-repeat');
+const changeBG = document.querySelector('body');
 
 let isPlaying = false;
 let index = 0;
 let time;
+let isRandom = false;
 
 // Hiển thị độ dài danh sách phát
 playList.innerHTML = musicList.length;
 
+function changeBg() {
+    const hex = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e'];
+    let firstColorIndex;
+    let secondColorIndex;
+    let firstColor = '';
+    let secondColor = '';
+    for (let i = 0; i < 6; i++) {
+        firstColorIndex = Math.floor(Math.random() * 15);
+        firstColor += hex[firstColorIndex];
+        secondColorIndex = Math.floor(Math.random() * 15);
+        secondColor += hex[secondColorIndex];
+    }
+    console.log(firstColor, secondColor);
+    changeBG.style.backgroundImage = `linear-gradient(to right, #${firstColor}, #${secondColor});`
+    trackSlider.style.backgroundImage = `linear-gradient(to right, #${firstColor}, #${secondColor});`
+    trackVolumn.style.backgroundImage = `linear-gradient(to right, #${firstColor}, #${secondColor});`
+}
+
+function randomTrack() {
+    trackShuffle.addEventListener('click', function () {
+        isRandom = isRandom ? false : true;
+        isRandom ? this.style.color = '#000' : this.style.color = '#fff';
+    })
+}
+
+function trackRepeatAll() {
+    trackRepeat.addEventListener('click', function () {
+        isRandom = isRandom ? false : true;
+    })
+}
+
+function nextTrack() {
+    if (isRandom) {
+        let randTrack = Math.floor(Math.random() * 4);
+        while (randTrack === index) {
+            randTrack = Math.floor(Math.random() * 4);
+        }
+        index = randTrack;
+    }
+    else {
+        index = index + 1 === musicList.length ? 0 : index + 1;
+    }
+    playBack(index);
+}
+
+function backTrack() {
+    if (isRandom) {
+        let randTrack = Math.floor(Math.random() * 4);
+        while (randTrack === index) {
+            randTrack = Math.floor(Math.random() * 4);
+        }
+        index = randTrack;
+    }
+    else {
+        index = index > 0 ? index - 1 : musicList.length - 1;
+    }
+    playBack(index);
+}
+
 function playBack(index) {
-    isPlaying = true;
     // Hiển thị số thứ tự danh sách đang phát
     nowPlaying.innerHTML = index + 1;
 
@@ -59,7 +122,13 @@ function playBack(index) {
     currentTrack.load();
     currentTrack.play();
 
-    // Hiển thị thanh trượt.
+    // Xử lí thanh volumn
+    trackVolumn.value = 100;
+    trackVolumn.addEventListener('change', function () {
+        currentTrack.volume = trackVolumn.value / 100;
+    })
+
+    // Xử lí thanh trượt.
     time = setInterval(function () {
         // Hiển thị thời gian hiện tại
         let currentMinutes = Math.floor(currentTrack.currentTime / 60);
@@ -92,6 +161,11 @@ function playBack(index) {
     wave.forEach(function (item) {
         item.classList.add('active');
     });
+
+    // Tự động phát tiếp nhạc
+    currentTrack.addEventListener('ended', function () {
+        nextTrack();
+    })
 }
 
 function pauseTrack() {
@@ -119,6 +193,9 @@ playBtn.addEventListener('click', function () {
         btnPause.style.display = 'none';
         btnPlay.style.display = 'block';
 
+        // Đổi màu nền
+        changeBg();
+
         //Phát nhạc
         playBack(index);
     } else {
@@ -133,16 +210,28 @@ playBtn.addEventListener('click', function () {
 
 // Lắng nghe sự kiện back
 backBtn.addEventListener('click', function () {
-    index = index > 0 ? index - 1 : musicList.length - 1;
     btnPause.style.display = 'none';
     btnPlay.style.display = 'block';
-    playBack(index);
+
+    // Đổi màu nền
+    changeBg();
+
+    backTrack();
 })
 
 // Lắng nghe sự kiện next
 nextBtn.addEventListener('click', function () {
-    index = index + 1 === musicList.length ? 0 : index + 1;
     btnPause.style.display = 'none';
     btnPlay.style.display = 'block';
-    playBack(index);
+
+    // Đổi màu nền
+    changeBg();
+
+    nextTrack();
 })
+
+// Bật mix nhạc 
+randomTrack();
+
+//Track repeat
+trackRepeatAll();
