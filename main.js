@@ -22,6 +22,24 @@ const musicList = [
         'name': 'Trốn Tìm',
         'artist': 'Đen Vâu',
         'music': '/music/tron-tim.mp3'
+    },
+    {
+        'img': './img/noi-ta-cho-em.jpg',
+        'name': 'Nơi Ta Chờ Em',
+        'artist': 'Will Ft Kaity',
+        'music': '/music/noi-ta-cho-em.mp3'
+    },
+    {
+        'img': '.img/dap-an-cuoi-cung.jpg',
+        'name': 'Đáp Án Cuối Cùng',
+        'artist': 'Quân A.P',
+        'music': 'music/dap-an-cuoi-cung.mp3'
+    },
+    {
+        'img': '.img/yeu-u-de-sau.jpg',
+        'name': 'Hẹn Ngày Mai Yêu',
+        'artist': 'Long Cao',
+        'music': 'music/yeu-u-de-sau.mp3'
     }
 ];
 
