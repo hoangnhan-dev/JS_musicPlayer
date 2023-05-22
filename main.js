@@ -86,9 +86,9 @@ function changeBg() {
         secondColor += hex[secondColorIndex];
     }
 
-    changeBG.style.backgroundImage = `linear-gradient(to right, #${firstColor}, #${secondColor});`
-    trackSlider.style.backgroundImage = `linear-gradient(to right, #${firstColor}, #${secondColor});`
-    trackVolumn.style.backgroundImage = `linear-gradient(to right, #${firstColor}, #${secondColor});`
+    changeBG.style.background = `linear-gradient(to right, #${firstColor}, #${secondColor})`
+    trackSlider.style.background = `linear-gradient(to right, #${firstColor}, #${secondColor})`
+    trackVolumn.style.background = `linear-gradient(to right, #${firstColor}, #${secondColor})`
 }
 
 function randomTrack() {
@@ -182,7 +182,7 @@ function playBack(index) {
     }, 1000);
 
     // Import ảnh, tên nhạc, tên tác giả
-    trackImg.style.backgroundImage = `url('${musicList[index].img}');`;
+    trackImg.style.backgroundImage = `url('${musicList[index].img}')`;
     trackName.innerHTML = musicList[index].name;
     trackArtist.innerHTML = musicList[index].artist;
 
