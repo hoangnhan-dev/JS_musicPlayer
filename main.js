@@ -68,6 +68,7 @@ let isPlaying = false;
 let index = 0;
 let time;
 let isRandom = false;
+let trackPos = 0;
 
 // Hiển thị độ dài danh sách phát
 playList.innerHTML = musicList.length;
@@ -84,30 +85,32 @@ function changeBg() {
         secondColorIndex = Math.floor(Math.random() * 15);
         secondColor += hex[secondColorIndex];
     }
-    console.log(firstColor, secondColor);
+
     changeBG.style.backgroundImage = `linear-gradient(to right, #${firstColor}, #${secondColor});`
     trackSlider.style.backgroundImage = `linear-gradient(to right, #${firstColor}, #${secondColor});`
     trackVolumn.style.backgroundImage = `linear-gradient(to right, #${firstColor}, #${secondColor});`
 }
 
 function randomTrack() {
-    trackShuffle.addEventListener('click', function () {
+    trackShuffle.addEventListener('click', () => {
         isRandom = isRandom ? false : true;
         isRandom ? this.style.color = '#000' : this.style.color = '#fff';
     })
 }
 
 function trackRepeatAll() {
-    trackRepeat.addEventListener('click', function () {
+    trackRepeat.addEventListener('click', () => {
         isRandom = isRandom ? false : true;
     })
 }
 
 function nextTrack() {
+    currentTime.innerText = `00:00`;
+    trackPos = 0;
     if (isRandom) {
-        let randTrack = Math.floor(Math.random() * currentTrack.length - 1);
+        let randTrack = Math.floor(Math.random() * musicList.length);
         while (randTrack === index) {
-            randTrack = Math.floor(Math.random() * currentTrack.length - 1);
+            randTrack = Math.floor(Math.random() * musicList.length);
         }
         index = randTrack;
     }
@@ -118,10 +121,12 @@ function nextTrack() {
 }
 
 function backTrack() {
+    currentTime.innerText = `00:00`;
+    trackPos = 0;
     if (isRandom) {
-        let randTrack = Math.floor(Math.random() * currentTrack.length);
+        let randTrack = Math.floor(Math.random() * musicList.length);
         while (randTrack === index) {
-            randTrack = Math.floor(Math.random() * currentTrack.length);
+            randTrack = Math.floor(Math.random() * musicList.length);
         }
         index = randTrack;
     }
@@ -136,18 +141,29 @@ function playBack(index) {
     nowPlaying.innerHTML = index + 1;
 
     // Phát nhạc 
-    currentTrack.src = musicList[index].music;
-    currentTrack.load();
-    currentTrack.play();
+    if (trackPos < 1) {
+        currentTrack.src = musicList[index].music;
+        currentTrack.load();
+        currentTrack.play();
+    }
+    else {
+        currentTrack.play();
+    }
 
     // Xử lí thanh volumn
     trackVolumn.value = 100;
-    trackVolumn.addEventListener('change', function () {
+    trackVolumn.addEventListener('change', () => {
         currentTrack.volume = trackVolumn.value / 100;
     })
 
+    // Xử lí tua bài phát bằng thanh slider track
+    trackSlider.addEventListener('change', () => {
+        currentTrack.currentTime = trackSlider.value / 100 * currentTrack.duration;
+
+    })
+
     // Xử lí thanh trượt.
-    time = setInterval(function () {
+    time = setInterval(() => {
         // Hiển thị thời gian hiện tại
         let currentMinutes = Math.floor(currentTrack.currentTime / 60);
         let currentSeconds = Math.floor(currentTrack.currentTime % 60);
@@ -181,7 +197,7 @@ function playBack(index) {
     });
 
     // Tự động phát tiếp nhạc
-    currentTrack.addEventListener('ended', function () {
+    currentTrack.addEventListener('ended', () => {
         nextTrack();
     })
 }
@@ -194,16 +210,17 @@ function pauseTrack() {
     // Dừng xoay ảnh
     trackImg.classList.remove('active');
 
-    // Ẩn wave
-    waveList.style.display = 'none';
+    // Remove active 
+    wave.forEach(function (item) {
+        item.classList.remove('active');
+    });
 
     // Dừng current time
     clearInterval(time);
-    currentTime.innerText = `00:00`;
 }
 
 // Lắng nghe sự kiện click vào nhút Play
-playBtn.addEventListener('click', function () {
+playBtn.addEventListener('click', () => {
     if (isPlaying === false) {
         isPlaying = true;
 
@@ -214,12 +231,20 @@ playBtn.addEventListener('click', function () {
         // Đổi màu nền
         changeBg();
 
-        //Phát nhạc
-        playBack(index);
-    } else {
+        if (trackPos > 0) {
+            currentTrack.currentTime = trackPos;
+            playBack(index);
+        } else {
+            playBack(index);
+        }
+    }
+    else {
         // Thay đổi nút play
         btnPause.style.display = 'block';
         btnPlay.style.display = 'none';
+
+        // Lấy vị trí hiện tại
+        trackPos = currentTrack.currentTime;
 
         // Dừng nhạc
         pauseTrack();
@@ -227,24 +252,26 @@ playBtn.addEventListener('click', function () {
 })
 
 // Lắng nghe sự kiện back
-backBtn.addEventListener('click', function () {
+backBtn.addEventListener('click', () => {
     btnPause.style.display = 'none';
     btnPlay.style.display = 'block';
 
     // Đổi màu nền
     changeBg();
 
+    // Phát nhạc
     backTrack();
 })
 
 // Lắng nghe sự kiện next
-nextBtn.addEventListener('click', function () {
+nextBtn.addEventListener('click', () => {
     btnPause.style.display = 'none';
     btnPlay.style.display = 'block';
 
     // Đổi màu nền
     changeBg();
 
+    // Phát bài kế tiếp
     nextTrack();
 })
 
