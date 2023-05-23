@@ -30,16 +30,28 @@ const musicList = [
         'music': '/music/noi-ta-cho-em.mp3'
     },
     {
-        'img': '.img/dap-an-cuoi-cung.jpg',
+        'img': './img/dap-an-cuoi-cung.jpg',
         'name': 'Đáp Án Cuối Cùng',
         'artist': 'Quân A.P',
-        'music': 'music/dap-an-cuoi-cung.mp3'
+        'music': '/music/dap-an-cuoi-cung.mp3'
     },
     {
-        'img': '.img/yeu-u-de-sau.jpg',
+        'img': './img/yeu-u-de-sau.jpg',
         'name': 'Hẹn Ngày Mai Yêu',
         'artist': 'Long Cao',
-        'music': 'music/yeu-u-de-sau.mp3'
+        'music': '/music/yeu-u-de-sau.mp3'
+    },
+    {
+        'img': './img/a-thousand-year.jpg',
+        'name': 'A Thousand Years',
+        'artist': 'Christina Perri ',
+        'music': '/music/A-Thousand-Years.mp3'
+    },
+    {
+        'img': './img/My-Heart-Will-Go-On.jpg',
+        'name': 'My Heart Will Go On',
+        'artist': 'Celine Dion',
+        'music': '/music/My-Heart-Will-Go-On.mp3'
     }
 ];
 
@@ -94,7 +106,8 @@ function changeBg() {
 function randomTrack() {
     trackShuffle.addEventListener('click', () => {
         isRandom = isRandom ? false : true;
-        isRandom ? this.style.color = '#000' : this.style.color = '#fff';
+        console.log(isRandom);
+        isRandom ? trackShuffle.style.color = '#000' : trackShuffle.style.color = '#fff';
     })
 }
 
