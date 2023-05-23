@@ -75,7 +75,7 @@ input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
     width: 14px;
     height: 14px;
-    border: 1px solid blue;
+    border: 1px solid transparent;
     border-radius: 50%;
     background-color: #fff;
     transition: all .5s;
